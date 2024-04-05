@@ -14,7 +14,6 @@ import 'package:super_editor/src/default_editor/selection_upstream_downstream.da
 import 'package:super_editor/src/default_editor/tasks.dart';
 import 'package:super_editor/src/default_editor/text.dart';
 import 'package:super_editor/src/infrastructure/_logging.dart';
-import 'package:super_editor/src/infrastructure/platforms/platform.dart';
 
 import 'document_serialization.dart';
 
@@ -611,37 +610,37 @@ class TextDeltasDocumentEditor {
   }
 
   DocumentSelection? _calculateNewDocumentSelection(TextEditingDelta delta) {
-    if (CurrentPlatform.isWeb &&
-        delta.selection.isCollapsed &&
-        _serializedDoc.isPositionInsidePlaceholder(delta.selection.extent)) {
-      // On web, pressing CMD + LEFT ARROW generates a non-text delta moving
-      // the selection to the first character. However, the first character is in a region
-      // invisible to the user. Adjust the document selection to be the first visible character.
-      // Expanded selection are already adjusted by the serializer.
-      return _serializedDoc.imeToDocumentSelection(
-        TextSelection.collapsed(
-          offset: _serializedDoc.firstVisiblePosition.offset,
-        ),
-      );
-    }
+    // if (CurrentPlatform.isWeb &&
+    //     delta.selection.isCollapsed &&
+    //     _serializedDoc.isPositionInsidePlaceholder(delta.selection.extent)) {
+    //   // On web, pressing CMD + LEFT ARROW generates a non-text delta moving
+    //   // the selection to the first character. However, the first character is in a region
+    //   // invisible to the user. Adjust the document selection to be the first visible character.
+    //   // Expanded selection are already adjusted by the serializer.
+    //   return _serializedDoc.imeToDocumentSelection(
+    //     TextSelection.collapsed(
+    //       offset: _serializedDoc.firstVisiblePosition.offset,
+    //     ),
+    //   );
+    // }
     return _serializedDoc.imeToDocumentSelection(delta.selection);
   }
 
   DocumentRange? _calculateNewComposingRegion(List<TextEditingDelta> deltas) {
     final lastDelta = deltas.last;
-    if (CurrentPlatform.isWeb &&
-        lastDelta.composing.isCollapsed &&
-        _serializedDoc.isPositionInsidePlaceholder(TextPosition(offset: lastDelta.composing.end))) {
-      // On web, pressing CMD + LEFT ARROW generates a non-text delta moving
-      // the selection, and possibly the composing region to the first character. However, the first character
-      // is in a region invisible to the user. Adjust the document composing region to be the first visible character.
-      // Expanded regions are already adjusted by the serializer.
-      return _serializedDoc.imeToDocumentRange(
-        TextRange.collapsed(
-          _serializedDoc.firstVisiblePosition.offset,
-        ),
-      );
-    }
+    // if (CurrentPlatform.isWeb &&
+    //     lastDelta.composing.isCollapsed &&
+    //     _serializedDoc.isPositionInsidePlaceholder(TextPosition(offset: lastDelta.composing.end))) {
+    //   // On web, pressing CMD + LEFT ARROW generates a non-text delta moving
+    //   // the selection, and possibly the composing region to the first character. However, the first character
+    //   // is in a region invisible to the user. Adjust the document composing region to be the first visible character.
+    //   // Expanded regions are already adjusted by the serializer.
+    //   return _serializedDoc.imeToDocumentRange(
+    //     TextRange.collapsed(
+    //       _serializedDoc.firstVisiblePosition.offset,
+    //     ),
+    //   );
+    // }
     return _serializedDoc.imeToDocumentRange(lastDelta.composing);
   }
 }
