@@ -23,8 +23,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations:
-    sdk: flutter
 
   # An exact version pin will be provided by the Flutter SDK
   intl: any
@@ -81,7 +79,6 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
   generate: true # for localization
-
   uses-material-design: true
 
   assets:
