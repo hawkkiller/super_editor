@@ -478,7 +478,7 @@ class SuperEditorImeInteractorState extends State<SuperEditorImeInteractor> impl
     return SuperEditorImeDebugVisuals(
       imeConnection: _imeConnection,
       child: Actions(
-        actions: defaultTargetPlatform == TargetPlatform.macOS ? disabledMacIntents : {},
+        actions: disabledMacIntents,
         child: SuperEditorHardwareKeyHandler(
           focusNode: _focusNode,
           editContext: widget.editContext,

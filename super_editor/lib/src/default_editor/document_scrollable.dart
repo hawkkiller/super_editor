@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:super_editor/src/infrastructure/_logging.dart';
 import 'package:super_editor/src/infrastructure/documents/document_scroller.dart';
-import 'package:super_editor/src/infrastructure/flutter/build_context.dart';
 import 'package:super_editor/src/infrastructure/flutter/flutter_scheduler.dart';
 import 'package:super_editor/src/infrastructure/flutter/material_scrollbar.dart';
 import 'package:super_editor/src/infrastructure/scrolling_diagnostics/_scrolling_minimap.dart';
@@ -70,8 +69,6 @@ class _DocumentScrollableState extends State<DocumentScrollable>
     with SingleTickerProviderStateMixin {
   // The ScrollController that's used when we install our own Scrollable.
   late ScrollController _scrollController;
-  // The ScrollPosition used when there's an ancestor Scrollable.
-  ScrollPosition? _ancestorScrollPosition;
 
   ScrollableInstrumentation? _debugInstrumentation;
 
@@ -162,9 +159,6 @@ class _DocumentScrollableState extends State<DocumentScrollable>
   /// widget includes a `ScrollView` and this `State`'s render object
   /// is the viewport `RenderBox`.
   RenderBox get _viewport => (context.findRenderObject()) as RenderBox;
-  // RenderBox get _viewport =>
-  //     (context.findAncestorScrollableWithVerticalScroll?.context.findRenderObject() ?? context.findRenderObject())
-  //         as RenderBox;
 
   /// Returns the `ScrollPosition` that controls the scroll offset of
   /// this widget.
@@ -176,25 +170,10 @@ class _DocumentScrollableState extends State<DocumentScrollable>
   /// If this widget doesn't have an ancestor `Scrollable`, then this
   /// widget includes a `ScrollView` and the `ScrollView`'s position
   /// is returned.
-  ScrollPosition get _scrollPosition => _ancestorScrollPosition ?? _scrollController.position;
+  ScrollPosition get _scrollPosition => _scrollController.position;
 
   @override
-  Widget build(BuildContext context) {
-    // final ancestorScrollable = context.findAncestorScrollableWithVerticalScroll;
-    // _ancestorScrollPosition = ancestorScrollable?.position;
-
-    return Stack(
-      children: [
-        _ancestorScrollPosition == null //
-            ? _buildScroller(child: widget.child) //
-            : widget.child,
-        if (widget.showDebugPaint)
-          ..._buildScrollingDebugPaint(
-            includesScrollView: true,
-          ),
-      ],
-    );
-  }
+  Widget build(BuildContext context) => _buildScroller(child: widget.child);
 
   Widget _buildScroller({
     required Widget child,
@@ -206,7 +185,6 @@ class _DocumentScrollableState extends State<DocumentScrollable>
         behavior: scrollBehavior.copyWith(scrollbars: false),
         child: SingleChildScrollView(
           controller: _scrollController,
-          physics: const NeverScrollableScrollPhysics(),
           child: child,
         ),
       ),
