@@ -32,8 +32,11 @@ class DocumentScrollable extends StatefulWidget {
     this.scroller,
     this.scrollingMinimapId,
     this.showDebugPaint = false,
+    this.padding,
     required this.child,
   }) : super(key: key);
+
+  final EdgeInsets? padding;
 
   /// Controller that adjusts the scroll offset of this [DocumentScrollable].
   final AutoScrollController autoScroller;
@@ -175,15 +178,14 @@ class _DocumentScrollableState extends State<DocumentScrollable>
   @override
   Widget build(BuildContext context) => _buildScroller(child: widget.child);
 
-  Widget _buildScroller({
-    required Widget child,
-  }) {
+  Widget _buildScroller({required Widget child}) {
     final scrollBehavior = ScrollConfiguration.of(context);
     return _maybeBuildScrollbar(
       behavior: scrollBehavior,
       child: ScrollConfiguration(
         behavior: scrollBehavior.copyWith(scrollbars: false),
         child: SingleChildScrollView(
+          padding: widget.padding,
           controller: _scrollController,
           child: child,
         ),

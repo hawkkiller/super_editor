@@ -105,6 +105,7 @@ class SuperEditor extends StatefulWidget {
     required this.editor,
     required this.document,
     required this.composer,
+    this.padding,
     this.scrollController,
     this.documentLayoutKey,
     Stylesheet? stylesheet,
@@ -269,6 +270,9 @@ class SuperEditor extends StatefulWidget {
   /// each visual component displayed in the document layout, e.g.,
   /// paragraph component, image component, horizontal rule component, etc.
   final List<ComponentBuilder> componentBuilders;
+
+  /// Padding that surrounds the document layout.
+  final EdgeInsets? padding;
 
   /// All actions that this editor takes in response to key
   /// events, e.g., text entry, newlines, character deletion,
@@ -603,6 +607,7 @@ class SuperEditorState extends State<SuperEditor> {
               child: _buildPlatformSpecificViewportDecorations(
                 controlsScopeContext,
                 child: DocumentScaffold(
+                  padding: widget.padding,
                   documentLayoutLink: _documentLayoutLink,
                   documentLayoutKey: _docLayoutKey,
                   gestureBuilder: _buildGestureInteractor,

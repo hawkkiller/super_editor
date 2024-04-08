@@ -23,10 +23,14 @@ class DocumentScaffold<ContextType> extends StatefulWidget {
     required this.scroller,
     required this.presenter,
     required this.componentBuilders,
+    this.padding,
     this.underlays = const [],
     this.overlays = const [],
     this.debugPaint = const DebugPaintConfig(),
   });
+
+  /// Padding to be rendered around the document layout.
+  final EdgeInsets? padding;
 
   /// [LayerLink] that's is attached to the document layout.
   final LayerLink documentLayoutLink;
@@ -94,6 +98,7 @@ class _DocumentScaffoldState extends State<DocumentScaffold> {
     return ViewportBoundsReporter(
       viewportOuterConstraints: _contentConstraints,
       child: DocumentScrollable(
+        padding: widget.padding,
         autoScroller: widget.autoScrollController,
         scrollController: widget.scrollController,
         scrollingMinimapId: widget.debugPaint.scrollingMinimapId,
