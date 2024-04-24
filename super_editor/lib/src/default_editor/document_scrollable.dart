@@ -284,7 +284,7 @@ class _DocumentScrollableState extends State<DocumentScrollable> with SingleTick
 /// based on client requests.
 class AutoScrollController with ChangeNotifier {
   AutoScrollController({
-    double maxScrollSpeed = 20.0,
+    double maxScrollSpeed = 5,
     this.selectionExtentAutoScrollBoundary = AxisOffset.zero,
     AxisOffset gutter = const AxisOffset(leading: 100, trailing: 100),
   })  : _maxScrollSpeed = maxScrollSpeed,
