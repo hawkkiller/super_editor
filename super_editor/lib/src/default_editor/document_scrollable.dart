@@ -199,7 +199,6 @@ class _DocumentScrollableState extends State<DocumentScrollable>
         behavior: scrollBehavior.copyWith(scrollbars: false),
         child: SingleChildScrollView(
           controller: _scrollController,
-          physics: const NeverScrollableScrollPhysics(),
           child: child,
         ),
       ),
